@@ -81,35 +81,6 @@ It provides modules for managing patients, viewing analytics, authentication sys
 
 ---
 
-## ⚠️ Missing / Future Improvements
-
-This project currently does NOT include:
-
-### 🔥 Advanced Features (Planned)
-- Firebase Firestore (real backend database)
-- Role-based access control (Admin / Doctor / Staff)
-- Real-time patient updates
-- Appointment booking system
-- Push notifications via Firebase Cloud Messaging (FCM)
-- Email notifications system
-- Audit logs / activity tracking
-
----
-
-### 📲 PWA Enhancements
-- Offline mode support
-- Background sync
-- Full mobile app-like experience
-
----
-
-### 🧠 UX Improvements
-- Toast notification system (instead of browser alerts)
-- Loading skeletons for data fetching
-- Better error handling UI
-- Dark mode support
-
----
 
 ## 📦 Installation
 
