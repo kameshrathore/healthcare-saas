@@ -29,9 +29,10 @@ export function AppBreadcrumb() {
   });
 
   return (
-    <Breadcrumb className="mb-6">
-      <BreadcrumbList className="flex items-center gap-2 text-sm">
-        
+    <Breadcrumb className="mb-2">
+
+      <BreadcrumbList className="flex items-center gap-1 text-xs">
+
         {/* Home */}
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
@@ -39,7 +40,7 @@ export function AppBreadcrumb() {
               to="/"
               className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition"
             >
-              <Home className="h-4 w-4" />
+              <Home className="h-3.5 w-3.5" />
               Home
             </Link>
           </BreadcrumbLink>
@@ -49,26 +50,27 @@ export function AppBreadcrumb() {
           const isLast = index === paths.length - 1;
 
           return (
-            <div key={path} className="flex items-center gap-2">
-              
-              <BreadcrumbSeparator className="text-muted-foreground/60" />
+            <div key={path} className="flex items-center gap-1">
+
+              <BreadcrumbSeparator className="text-muted-foreground/50" />
 
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage className="px-2 py-1 rounded-md bg-muted text-foreground font-medium">
+                  <BreadcrumbPage className="text-foreground font-medium">
                     {routeMap[path] || "Page"}
                   </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
                     <Link
                       to={path as any}
-                      className="text-muted-foreground hover:text-foreground transition hover:underline underline-offset-4"
+                      className="text-muted-foreground hover:text-foreground transition"
                     >
                       {routeMap[path] || "Page"}
                     </Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
+
             </div>
           );
         })}
