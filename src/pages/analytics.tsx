@@ -25,7 +25,6 @@ import {
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  TrendingUp,
   Users,
   Activity,
   HeartPulse,
