@@ -105,11 +105,21 @@ export default function Dashboard() {
 
           <CardContent>
             <p className="text-3xl font-bold text-green-600">$12,450</p>
+            <div className="flex items-center justify-between mt-3">
 
-            <div className="flex items-center gap-2 mt-2 text-xs text-green-600">
-              <TrendingUp className="h-3.5 w-3.5" />
-              +12.4% growth
-            </div>
+  {/* left progress (optional future use) */}
+  <div />
+
+  {/* right trend badge */}
+  <div className="flex items-center gap-1 text-xs font-medium text-green-600  px-2 py-1">
+    <TrendingUp className="h-3.5 w-3.5" />
+    +12.4%
+  </div>
+
+</div>
+<div className="text-xs text-muted-foreground mt-1">
+  +12.4% growth
+</div>
           </CardContent>
         </Card>
       </div>
