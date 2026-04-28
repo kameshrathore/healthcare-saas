@@ -1,40 +1,100 @@
 "use client";
+
 import type { ColumnDef } from "@tanstack/react-table";
 
 export type Patient = {
   id: string;
   name: string;
   age: number;
+  gender: "Male" | "Female" | "Other";
+  phone: string;
   condition: string;
-  status?: string; // optional if you add later
+  severity: "Low" | "Medium" | "High";
+  lastVisit: string;
+  status: "Active" | "In Treatment" | "Discharged";
 };
 
 export const columns: ColumnDef<Patient>[] = [
   {
-    accessorKey: "name",
-    header: () => <div className="text-left">Name</div>,
+    accessorKey: "id",
+    header: "Patient ID",
     cell: ({ row }) => (
-      <div className="text-left font-medium">
-        {row.getValue("name")}
+      <div className="font-mono text-xs text-muted-foreground">
+        {row.getValue("id")}
       </div>
     ),
   },
   {
-    accessorKey: "age",
-    header: () => <div className="text-center">Age</div>,
+    accessorKey: "name",
+    header: "Name",
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.getValue("age")}
+      <div className="font-medium">{row.getValue("name")}</div>
+    ),
+  },
+  {
+    accessorKey: "age",
+    header: "Age",
+    cell: ({ row }) => <div>{row.getValue("age")} yrs</div>,
+  },
+  {
+    accessorKey: "gender",
+    header: "Gender",
+  },
+  {
+    accessorKey: "phone",
+    header: "Contact",
+    cell: ({ row }) => (
+      <div className="text-sm text-muted-foreground">
+        {row.getValue("phone")}
       </div>
     ),
   },
   {
     accessorKey: "condition",
-    header: () => <div className="text-left">Condition</div>,
-    cell: ({ row }) => (
-      <div className="text-left">
-        {row.getValue("condition")}
-      </div>
-    ),
+    header: "Condition",
+  },
+  {
+    accessorKey: "severity",
+    header: "Severity",
+    cell: ({ row }) => {
+      const value = row.getValue("severity") as string;
+
+      const color =
+        value === "High"
+          ? "text-red-600"
+          : value === "Medium"
+          ? "text-orange-500"
+          : "text-green-600";
+
+      return <div className={`font-medium ${color}`}>{value}</div>;
+    },
+  },
+  {
+    accessorKey: "lastVisit",
+    header: "Last Visit",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("lastVisit"));
+      return (
+        <div className="text-sm text-muted-foreground">
+          {date.toLocaleDateString()}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string;
+
+      const style =
+        status === "Active"
+          ? "text-green-600"
+          : status === "In Treatment"
+          ? "text-blue-600"
+          : "text-gray-500";
+
+      return <span className={`font-medium ${style}`}>{status}</span>;
+    },
   },
 ];
