@@ -1,4 +1,3 @@
-// src/routes/index.tsx
 import {
   createRootRoute,
   createRoute,
@@ -10,16 +9,16 @@ import Analytics from "@/pages/analytics";
 import PatientDetails from "@/pages/patient-details";
 import Login from "@/pages/login";
 
-// Root route with Outlet
 const rootRoute = createRootRoute({
-  component: () => (
-    <div className="p-6">
-      <Outlet /> {/* This renders child routes */}
-    </div>
-  ),
+  component: () => <Outlet />,
 });
 
-// Child routes
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/login",
+  component: Login,
+});
+
 const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
@@ -38,16 +37,9 @@ const patientsRoute = createRoute({
   component: PatientDetails,
 });
 
-const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/login",
-  component: Login,
-});
-
-// Route tree
 export const routeTree = rootRoute.addChildren([
+  loginRoute,
   dashboardRoute,
   analyticsRoute,
   patientsRoute,
-  loginRoute,
 ]);
