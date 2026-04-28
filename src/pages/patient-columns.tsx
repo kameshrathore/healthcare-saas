@@ -6,19 +6,35 @@ export type Patient = {
   name: string;
   age: number;
   condition: string;
+  status?: string; // optional if you add later
 };
 
 export const columns: ColumnDef<Patient>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: () => <div className="text-left">Name</div>,
+    cell: ({ row }) => (
+      <div className="text-left font-medium">
+        {row.getValue("name")}
+      </div>
+    ),
   },
   {
     accessorKey: "age",
-    header: "Age",
+    header: () => <div className="text-center">Age</div>,
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.getValue("age")}
+      </div>
+    ),
   },
   {
     accessorKey: "condition",
-    header: "Condition",
+    header: () => <div className="text-left">Condition</div>,
+    cell: ({ row }) => (
+      <div className="text-left">
+        {row.getValue("condition")}
+      </div>
+    ),
   },
 ];
