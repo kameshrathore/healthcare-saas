@@ -32,6 +32,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { ChevronLeft, ChevronRight, Settings2 } from "lucide-react";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -46,6 +48,12 @@ export function DataTable<TData, TValue>({
     React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
+  const [globalFilter, setGlobalFilter] = React.useState("");
+
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
 
   const table = useReactTable({
     data,
@@ -54,35 +62,50 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
       columnVisibility,
+      pagination,
+      globalFilter,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    onGlobalFilterChange: setGlobalFilter,
+
+    // ✅ Enables search
+    globalFilterFn: "includesString",
+
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
   });
 
   return (
-    <div className="space-y-4">
-
-      {/* 🔍 Filter + Columns */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-5">
+      {/* 🔍 Search + Column toggle */}
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(e) =>
-            table.getColumn("email")?.setFilterValue(e.target.value)
-          }
-          className="max-w-sm"
+          placeholder="Search..."
+          value={globalFilter ?? ""}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="max-w-sm h-10 rounded-lg border-muted focus-visible:ring-1"
         />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">Columns</Button>
+            <Button variant="outline" className="gap-2">
+              <Settings2 className="h-4 w-4" />
+              Columns
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+
+          <DropdownMenuContent align="end" className="w-40">
             {table
               .getAllColumns()
               .filter((col) => col.getCanHide())
@@ -93,6 +116,7 @@ export function DataTable<TData, TValue>({
                   onCheckedChange={(value) =>
                     column.toggleVisibility(!!value)
                   }
+                  className="capitalize"
                 >
                   {column.id}
                 </DropdownMenuCheckboxItem>
@@ -102,16 +126,13 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* 📊 Table */}
-      <div className="rounded-md border bg-background">
+      <div className="rounded-xl border bg-background shadow-sm overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted/40 sticky top-0 z-10">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="h-12">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="align-middle text-left font-medium"
-                  >
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -126,13 +147,15 @@ export function DataTable<TData, TValue>({
 
           <TableBody>
             {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="h-12">
+              table.getRowModel().rows.map((row, i) => (
+                <TableRow
+                  key={row.id}
+                  className={`${
+                    i % 2 === 0 ? "bg-background" : "bg-muted/20"
+                  }`}
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="align-middle"
-                    >
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -145,9 +168,9 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="text-center h-24"
                 >
-                  No results.
+                  🚫 No data found
                 </TableCell>
               </TableRow>
             )}
@@ -157,27 +180,28 @@ export function DataTable<TData, TValue>({
 
       {/* 📌 Footer */}
       <div className="flex items-center justify-between text-sm">
-        <div className="text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} row(s)
+        <div>
+          Showing {table.getRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} entries
         </div>
 
         <div className="flex gap-2">
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            <ChevronLeft className="h-4 w-4" />
           </Button>
 
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>

@@ -8,7 +8,20 @@ const patients: Patient[] = [
   { id: "1", name: "John Doe", age: 45, condition: "Diabetes" },
   { id: "2", name: "Jane Smith", age: 32, condition: "Hypertension" },
   { id: "3", name: "Michael Brown", age: 60, condition: "Asthma" },
+  { id: "4", name: "Emily Johnson", age: 28, condition: "Anemia" },
+  { id: "5", name: "David Wilson", age: 52, condition: "Arthritis" },
+  { id: "6", name: "Sophia Martinez", age: 36, condition: "Migraine" },
+  { id: "7", name: "James Anderson", age: 41, condition: "Obesity" },
+  { id: "8", name: "Olivia Taylor", age: 29, condition: "Thyroid Disorder" },
+  { id: "9", name: "William Thomas", age: 55, condition: "Heart Disease" },
+  { id: "10", name: "Isabella Moore", age: 33, condition: "PCOS" },
+  { id: "11", name: "Alexander Jackson", age: 47, condition: "Sleep Apnea" },
+  { id: "12", name: "Mia White", age: 24, condition: "Allergies" },
+  { id: "13", name: "Benjamin Harris", age: 62, condition: "Parkinson’s" },
+  { id: "14", name: "Charlotte Clark", age: 38, condition: "Depression" },
+  { id: "15", name: "Henry Lewis", age: 50, condition: "Chronic Kidney Disease" },
 ];
+
 
 export default function PatientDetails() {
   return (
