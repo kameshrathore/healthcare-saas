@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       </div>
 
       {/* Page Content */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-3">
         <Outlet />
       </div>
 

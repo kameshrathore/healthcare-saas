@@ -22,10 +22,10 @@ export function AppHeader() {
   };
 
   return (
-    <header className="w-full flex items-center justify-between px-6 h-12 border-b bg-white/70 backdrop-blur">
+    <header className="w-full flex items-center justify-between p-3  h-12 border-b bg-white/70 backdrop-blur">
 
       {/* Left */}
-      <h1 className="text-lg font-bold text-indigo-600">
+      <h1 className="text-lg  font-bold text-indigo-600">
         Healthcare SaaS
       </h1>
 
