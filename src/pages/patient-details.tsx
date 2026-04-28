@@ -71,6 +71,17 @@ const patients: Patient[] = [
     lastVisit: "2026-04-01",
     status: "In Treatment",
   },
+  {
+    id: "PT-1006",
+    name: "David Wilson",
+    age: 52,
+    gender: "Male",
+    phone: "+91 9112233445",
+    condition: "Arthritis",
+    severity: "Medium",
+    lastVisit: "2026-04-01",
+    status: "In Treatment",
+  },
 ];
 
 export default function PatientDetails() {
