@@ -32,7 +32,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { ChevronLeft, ChevronRight, Settings2 } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+import { Settings2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -71,30 +81,31 @@ export function DataTable<TData, TValue>({
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
 
-    // ✅ Enables search
     globalFilterFn: "includesString",
 
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-
-    initialState: {
-      pagination: {
-        pageSize: 5,
-      },
-    },
   });
+
+  const totalPages = table.getPageCount();
+  const currentPage = table.getState().pagination.pageIndex;
+
+  const getPageNumbers = () => {
+    return Array.from({ length: totalPages }, (_, i) => i);
+  };
 
   return (
     <div className="space-y-5">
-      {/* 🔍 Search + Column toggle */}
+
+      {/* 🔍 Search + Columns */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <Input
           placeholder="Search..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          className="max-w-sm h-10 rounded-lg border-muted focus-visible:ring-1"
+          className="max-w-sm h-10 rounded-lg"
         />
 
         <DropdownMenu>
@@ -147,13 +158,8 @@ export function DataTable<TData, TValue>({
 
           <TableBody>
             {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row, i) => (
-                <TableRow
-                  key={row.id}
-                  className={`${
-                    i % 2 === 0 ? "bg-background" : "bg-muted/20"
-                  }`}
-                >
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -166,10 +172,7 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-center h-24"
-                >
+                <TableCell colSpan={columns.length} className="text-center h-24">
                   🚫 No data found
                 </TableCell>
               </TableRow>
@@ -178,32 +181,48 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* 📌 Footer */}
-      <div className="flex items-center justify-between text-sm">
-        <div>
-          Showing {table.getRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} entries
+      {/* 📌 Footer + Pagination RIGHT aligned */}
+      <div className="flex items-center justify-between">
+
+        {/* Left info */}
+        <div className="text-sm text-muted-foreground">
+          Page {currentPage + 1} of {totalPages}
         </div>
 
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+        {/* Right pagination */}
+        <div className="flex justify-end">
+          <Pagination>
+            <PaginationContent>
 
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => table.previousPage()}
+                  className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+
+              {getPageNumbers().map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    isActive={currentPage === page}
+                    onClick={() => table.setPageIndex(page)}
+                  >
+                    {page + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => table.nextPage()}
+                  className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+
+            </PaginationContent>
+          </Pagination>
         </div>
+
       </div>
     </div>
   );
