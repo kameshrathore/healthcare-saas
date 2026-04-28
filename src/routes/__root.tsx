@@ -1,5 +1,5 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { AppBreadcrumb } from "@/components/app-breadcrumb";
+import { AppBreadcrumb } from "@/components/ui/app-breadcrumb";
 
 export const Route = createRootRoute({
   component: () => (
