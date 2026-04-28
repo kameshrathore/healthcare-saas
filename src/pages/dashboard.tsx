@@ -99,9 +99,19 @@ export default function Dashboard() {
           </CardHeader>
 
           <CardContent>
-            <Button asChild className="w-full">
-              <a href="/analytics">Go to Analytics</a>
-            </Button>
+            <Button
+  asChild
+  className="w-full h-9 text-sm font-medium rounded-lg 
+             bg-gradient-to-r from-indigo-500 to-purple-600 
+             text-white shadow 
+             hover:shadow-md hover:scale-[1.01] 
+             transition-all duration-200"
+>
+  <a href="/analytics" className="flex items-center justify-center gap-1.5">
+    Go to Analytics
+    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+  </a>
+</Button>
           </CardContent>
         </Card>
 
@@ -118,9 +128,19 @@ export default function Dashboard() {
           </CardHeader>
 
           <CardContent>
-            <Button asChild className="w-full" variant="secondary">
-              <a href="/patients">View Patients</a>
-            </Button>
+            <Button
+  asChild
+  className="w-full h-9 text-sm font-medium rounded-lg 
+             bg-gradient-to-r from-blue-500 to-cyan-500 
+             text-white shadow 
+             hover:shadow-md hover:scale-[1.01] 
+             transition-all duration-200"
+>
+  <a href="/patients" className="flex items-center justify-center gap-1.5">
+    View Patients
+    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+  </a>
+</Button>
           </CardContent>
         </Card>
 
