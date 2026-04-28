@@ -9,7 +9,6 @@ import Dashboard from "@/pages/dashboard";
 import Analytics from "@/pages/analytics";
 import PatientDetails from "@/pages/patient-details";
 import Login from "@/pages/login";
-import { auth } from "@/services/firebase";
 import { getCurrentUser } from "@/services/auth";
 
 /* ROOT */

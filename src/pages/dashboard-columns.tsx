@@ -35,7 +35,11 @@ export const columns: ColumnDef<any>[] = [
           ? "text-yellow-600"
           : "text-red-600";
 
-      return <div className={`text-right ${color}`}>{status}</div>;
+      return (
+        <div className={`text-right ${color}`}>
+          {String(status)}
+        </div>
+      );
     },
   },
 ];
