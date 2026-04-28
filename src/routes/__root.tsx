@@ -10,7 +10,7 @@ export const Route = createRootRoute({
       <AppHeader />
 
       {/* Breadcrumb */}
-      <div className="p-4 bg-white/60 backdrop-blur">
+      <div className="p-3 bg-white/60 backdrop-blur">
         <AppBreadcrumb />
       </div>
 

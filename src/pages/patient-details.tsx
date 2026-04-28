@@ -15,6 +15,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
+import { Badge } from "@/components/ui/badge";
+import { Phone, Calendar, Activity } from "lucide-react";
+
 const patients: Patient[] = [
   {
     id: "PT-1001",
@@ -87,6 +90,30 @@ const patients: Patient[] = [
 export default function PatientDetails() {
   const [isListView, setIsListView] = useState(true);
 
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case "High":
+        return "bg-red-100 text-red-600";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700";
+      default:
+        return "bg-green-100 text-green-600";
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Active":
+        return "bg-blue-100 text-blue-600";
+      case "In Treatment":
+        return "bg-purple-100 text-purple-600";
+      case "Discharged":
+        return "bg-gray-100 text-gray-600";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 space-y-6">
 
@@ -130,31 +157,79 @@ export default function PatientDetails() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
           {patients.map((p) => (
             <Card
               key={p.id}
-              className="shadow-md hover:shadow-lg transition border bg-white/90 backdrop-blur rounded-xl"
+              className="group hover:shadow-xl transition border bg-white/90 backdrop-blur"
             >
+
+              {/* HEADER */}
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold text-indigo-700">
-                  {p.name}
-                </CardTitle>
-                <CardDescription className="text-sm text-gray-500">
-                  {p.condition}
-                </CardDescription>
+                <div className="flex items-start justify-between">
+
+                  <div>
+                    <CardTitle className="text-lg font-semibold">
+                      {p.name}
+                    </CardTitle>
+
+                    <CardDescription>
+                      {p.condition}
+                    </CardDescription>
+                  </div>
+
+                  <Badge className={getSeverityColor(p.severity)}>
+                    {p.severity}
+                  </Badge>
+
+                </div>
               </CardHeader>
 
-              <CardContent className="space-y-1 text-sm text-gray-600">
-                <p>Age: {p.age}</p>
-                <p>Gender: {p.gender}</p>
-                <p>Phone: {p.phone}</p>
-                <p>Severity: {p.severity}</p>
-                <p>Status: {p.status}</p>
+              {/* BODY */}
+              <CardContent className="space-y-2 text-sm">
+
+                <div className="flex items-center justify-between text-gray-600">
+                  <span>Age</span>
+                  <span className="font-medium">{p.age}</span>
+                </div>
+
+                <div className="flex items-center justify-between text-gray-600">
+                  <span>Gender</span>
+                  <span>{p.gender}</span>
+                </div>
+
+                <div className="flex items-center justify-between text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <Phone className="h-3.5 w-3.5" /> Phone
+                  </span>
+                  <span>{p.phone}</span>
+                </div>
+
+                <div className="flex items-center justify-between text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3.5 w-3.5" /> Last Visit
+                  </span>
+                  <span>{p.lastVisit}</span>
+                </div>
+
+                <div className="flex items-center justify-between pt-2">
+                  <span className="flex items-center gap-1 text-gray-600">
+                    <Activity className="h-3.5 w-3.5" /> Status
+                  </span>
+
+                  <Badge className={getStatusColor(p.status)}>
+                    {p.status}
+                  </Badge>
+                </div>
+
               </CardContent>
+
             </Card>
           ))}
+
         </div>
       )}
+
     </div>
   );
 }
