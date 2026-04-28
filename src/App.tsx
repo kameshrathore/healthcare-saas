@@ -1,18 +1,14 @@
-// src/App.tsx
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "@/routes/index";
 
 const router = createRouter({ routeTree });
 
-function App() {
+export default function App() {
   return (
-    <div className="bg-bg min-h-screen flex flex-col">
-      {/* Router outlet renders the current page */}
+    <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         <RouterProvider router={router} />
       </main>
     </div>
   );
 }
-
-export default App;
