@@ -1,7 +1,7 @@
-# Healthcare SaaS Dashboard
+# 🏥 Healthcare SaaS Dashboard
 
 A modern healthcare SaaS dashboard built with **React**, **TypeScript**, **TanStack Router**, **Firebase Auth**, **shadcn/ui**, and **TailwindCSS**.  
-It provides modules for managing patients, viewing analytics, authentication system, and modern UI workflows.
+It provides modules for managing patients, analytics, authentication, and a modern SaaS-style UI experience.
 
 ---
 
@@ -11,22 +11,33 @@ It provides modules for managing patients, viewing analytics, authentication sys
 
 ---
 
-## 🚀 Features
+## ✨ Features
+
+### 🧭 Routing (TanStack Router)
+- File-based + code-based routing architecture
+- Nested layouts with protected routes
+- Automatic route tree management
+- Dynamic navigation between modules
+- Route-level authentication guard (protected pages)
+
+---
 
 ### 🔐 Authentication (Firebase)
 - Email & Password login
 - Google OAuth login
 - Session handling via Firebase Auth
 - Protected routes (redirect to login if not authenticated)
+- Error handling for invalid credentials
 
 ---
 
 ### 📊 Dashboard
-- Overview cards for:
+- Overview stats cards:
   - Patients
   - Appointments
-  - Revenue (UI mock)
+  - Revenue (UI mock data)
 - Quick navigation to modules
+- Modern SaaS-style UI cards
 
 ---
 
@@ -34,53 +45,59 @@ It provides modules for managing patients, viewing analytics, authentication sys
 - Interactive DataTable with:
   - Search & filtering
   - Pagination
-  - Column visibility control
+  - Column visibility toggle
   - Sorting support
+- Grid + List view toggle
+- Clean responsive UI
 
 ---
 
 ### 📈 Analytics Module
 - Charts powered by **Recharts**
-- Custom shadcn/ui chart components
-- Clean dashboard visualizations
+- OPD vs IPD patient analytics
+- Responsive chart container
+- Clean dashboard visualization
 
 ---
 
-### 🔔 Notifications (PWA Feature)
+### 🔔 Notifications (Web API)
 - Browser notifications (Web Notification API)
 - Service Worker integration
 - Login success/failure notifications
-- Google login notifications
+- Google login feedback alerts
 
 ---
 
-### ⚙️ Progressive Web App (PWA)
-- Service Worker registered
-- Offline-ready foundation (basic)
-- Ready for push notification upgrade (FCM)
+### ⚙️ Progressive Web App (PWA Foundation)
+- Service Worker registered successfully
+- Basic offline-ready setup
+- Ready for future upgrades:
+  - Push notifications (FCM)
+  - Offline caching strategy
+  - Installable PWA support
 
 ---
 
 ### 📱 Responsive UI
-- Fully responsive design
+- Fully responsive SaaS layout
 - Mobile + desktop optimized
-- Modern SaaS layout
+- Smooth transitions and hover effects
+- Modern gradient + glassmorphism design
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **React 18 + TypeScript**
-- **Vite** (fast build tool)
-- **TanStack Router** (routing system)
-- **Firebase Authentication**
-- **shadcn/ui** (UI components)
-- **TailwindCSS** (styling)
-- **Recharts** (data visualization)
-- **Lucide-react** (icons)
+- React 18 + TypeScript  
+- Vite (build tool)  
+- TanStack Router (core routing system)  
+- Firebase Authentication  
+- shadcn/ui (UI components)  
+- TailwindCSS (styling)  
+- Recharts (data visualization)  
+- Lucide-react (icons)  
 
 ---
-
 
 ## 📦 Installation
 
