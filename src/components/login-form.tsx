@@ -27,6 +27,18 @@ import {
 import { auth } from "@/services/firebase";
 import { useRouter } from "@tanstack/react-router";
 
+// ✅ notification helper
+function showNotification(title: string, body: string) {
+  if (!("Notification" in window)) return;
+
+  if (Notification.permission === "granted") {
+    new Notification(title, {
+      body,
+      icon: "/favicon.svg",
+    });
+  }
+}
+
 export function LoginForm({
   className,
   ...props
@@ -46,10 +58,24 @@ export function LoginForm({
 
     try {
       setLoading(true);
+
       await signInWithEmailAndPassword(auth, email, password);
+
+      // ✅ SUCCESS NOTIFICATION
+      showNotification(
+        "Login Successful 🎉",
+        "Welcome back to Healthcare Dashboard"
+      );
+
       router.navigate({ to: "/" });
     } catch (err: any) {
       setError("Invalid email or password");
+
+      // ❌ ERROR NOTIFICATION
+      showNotification(
+        "Login Failed",
+        "Please check your credentials"
+      );
     } finally {
       setLoading(false);
     }
@@ -59,11 +85,24 @@ export function LoginForm({
   const handleGoogle = async () => {
     try {
       setError(null);
+
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+
+      // ✅ SUCCESS NOTIFICATION
+      showNotification(
+        "Google Login Successful 🎉",
+        "Welcome back!"
+      );
+
       router.navigate({ to: "/" });
     } catch {
       setError("Google login failed");
+
+      showNotification(
+        "Login Failed",
+        "Google authentication failed"
+      );
     }
   };
 
@@ -72,7 +111,7 @@ export function LoginForm({
       className={cn("flex flex-col gap-6 w-full max-w-md mx-auto", className)}
       {...props}
     >
-      {/* Gradient Background Glow */}
+      {/* Background Glow */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" />
 
       <Card className="shadow-xl border border-border/50 backdrop-blur-xl bg-white/90">
@@ -87,7 +126,8 @@ export function LoginForm({
 
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-5">
-            {/* Social Login */}
+
+            {/* Google Login */}
             <Field>
               <Button
                 type="button"
@@ -130,6 +170,7 @@ export function LoginForm({
                   Forgot password?
                 </a>
               </div>
+
               <Input
                 type="password"
                 placeholder="••••••••"

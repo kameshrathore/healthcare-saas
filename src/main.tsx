@@ -5,7 +5,7 @@ import App from "./App.tsx";
 
 function Root() {
   useEffect(() => {
-    // Register Service Worker
+    // Service Worker
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/sw.js")
@@ -13,9 +13,15 @@ function Root() {
         .catch((err) => console.log("SW error", err));
     }
 
-    // Ask notification permission
+    // Notification permission (FIXED)
     if ("Notification" in window) {
-      Notification.requestPermission();
+      Notification.requestPermission().then((permission) => {
+        console.log("Notification permission:", permission);
+
+        if (permission !== "granted") {
+          console.warn("Notifications NOT allowed by user");
+        }
+      });
     }
   }, []);
 
