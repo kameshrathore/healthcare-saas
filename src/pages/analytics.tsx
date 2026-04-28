@@ -202,8 +202,8 @@ export default function Analytics() {
                   dataKey="value"
                   label
                 >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                  {pieData.map((entry) => (
+                    <Cell key={entry.name} fill={COLORS[pieData.indexOf(entry)]} />
                   ))}
                 </Pie>
               </PieChart>
