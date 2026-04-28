@@ -4,11 +4,14 @@ import { AppBreadcrumb } from "@/components/ui/app-breadcrumb";
 export const Route = createRootRoute({
   component: () => (
     <div className="min-h-screen flex flex-col">
-      <div className="p-4 border-b">
+      
+      {/* Header / Breadcrumb */}
+      <div className="p-4 border-b bg-white/60 backdrop-blur">
         <AppBreadcrumb />
       </div>
 
-      <div className="flex-1">
+      {/* Page Content */}
+      <div className="flex-1 p-4">
         <Outlet />
       </div>
     </div>

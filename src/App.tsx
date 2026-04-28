@@ -1,12 +1,8 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { routeTree } from "@/routes/index";
+import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({ routeTree });
 
 export default function App() {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
