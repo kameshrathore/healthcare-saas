@@ -51,7 +51,6 @@ export function LoginForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔐 Email Login
   const handleLogin = async (e?: React.FormEvent) => {
     e?.preventDefault();
     setError(null);
@@ -67,19 +66,15 @@ export function LoginForm({
       );
 
       router.navigate({ to: "/" });
-    } catch (err: any) {
+    } catch {
       setError("Invalid email or password");
 
-      showNotification(
-        "Login Failed",
-        "Please check your credentials"
-      );
+      showNotification("Login Failed", "Please check your credentials");
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔵 Google Login
   const handleGoogle = async () => {
     try {
       setError(null);
@@ -87,36 +82,26 @@ export function LoginForm({
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
 
-      showNotification(
-        "Google Login Successful 🎉",
-        "Welcome back!"
-      );
+      showNotification("Google Login Successful 🎉", "Welcome back!");
 
       router.navigate({ to: "/" });
     } catch {
       setError("Google login failed");
 
-      showNotification(
-        "Login Failed",
-        "Google authentication failed"
-      );
+      showNotification("Login Failed", "Google authentication failed");
     }
   };
 
-  // 🧪 Demo Autofill
   const fillDemo = () => {
     setEmail("test@healthcare.com");
     setPassword("123456");
   };
 
-  // ⚡ One-click demo login
-  const loginDemo = async () => {
+  const loginDemo = () => {
     setEmail("test@healthcare.com");
     setPassword("123456");
 
-    setTimeout(() => {
-      handleLogin();
-    }, 100);
+    setTimeout(() => handleLogin(), 100);
   };
 
   return (
@@ -124,10 +109,20 @@ export function LoginForm({
       className={cn("flex flex-col gap-6 w-full max-w-md mx-auto", className)}
       {...props}
     >
-      {/* Background Glow */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" />
+      {/* ✅ FIXED GLOW FOR DARK MOBILE */}
+      <div
+        className="absolute inset-0 -z-10 
+        bg-gradient-to-br 
+        from-indigo-500/10 via-purple-500/10 to-pink-500/10
+        dark:from-indigo-500/5 dark:via-purple-500/5 dark:to-pink-500/5
+        blur-3xl"
+      />
 
-      <Card className="shadow-xl border border-border/50 backdrop-blur-xl bg-white/90 dark:bg-gray-900/80">
+      {/* ✅ FIXED CARD CONTRAST */}
+      <Card
+        className="shadow-xl border border-border/50 backdrop-blur-xl 
+        bg-white/90 dark:bg-gray-900/90"
+      >
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Welcome back
@@ -140,8 +135,8 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-5">
 
-            {/* 🧪 DEMO LOGIN BOX */}
-            <div className="bg-muted border rounded-lg p-3 text-sm space-y-2">
+            {/* ✅ FIXED DEMO BOX */}
+            <div className="bg-muted/70 dark:bg-gray-800/70 border rounded-lg p-3 text-sm space-y-2">
               <p className="font-medium text-foreground flex items-center justify-between">
                 Demo Login
                 <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
@@ -191,7 +186,8 @@ export function LoginForm({
               <Button
                 type="button"
                 variant="outline"
-                className="w-full flex items-center justify-center gap-2 h-11 rounded-lg"
+                className="w-full flex items-center justify-center gap-2 h-11 rounded-lg 
+                bg-white dark:bg-gray-800"
                 onClick={handleGoogle}
               >
                 <img
@@ -213,7 +209,7 @@ export function LoginForm({
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-11"
+                className="h-11 bg-white dark:bg-gray-800 border-border"
                 required
               />
             </Field>
@@ -235,14 +231,15 @@ export function LoginForm({
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-11"
+                className="h-11 bg-white dark:bg-gray-800 border-border"
                 required
               />
             </Field>
 
             {/* Error */}
             {error && (
-              <p className="text-sm text-red-500 bg-red-50 dark:bg-red-900/30 p-2 rounded-md">
+              <p className="text-sm text-red-600 dark:text-red-400 
+                bg-red-50 dark:bg-red-900/20 p-2 rounded-md">
                 {error}
               </p>
             )}
@@ -250,7 +247,9 @@ export function LoginForm({
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full h-11 font-medium"
+              className="w-full h-11 font-medium 
+              bg-indigo-600 hover:bg-indigo-700 
+              dark:bg-indigo-500 dark:hover:bg-indigo-600"
               disabled={loading}
             >
               {loading ? "Signing in..." : "Sign in"}
