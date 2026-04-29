@@ -11,13 +11,99 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { LayoutGrid, List } from "lucide-react";
+
+import { LayoutGrid, List, Plus } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 // ---------------- DATA ----------------
-const patients: Patient[] = [ { id: "PT-1001", name: "John Doe", age: 45, gender: "Male", phone: "+91 9876543210", condition: "Diabetes", severity: "High", lastVisit: "2026-04-20", status: "In Treatment", }, { id: "PT-1002", name: "Jane Smith", age: 32, gender: "Female", phone: "+91 9123456780", condition: "Hypertension", severity: "Medium", lastVisit: "2026-04-10", status: "Active", }, { id: "PT-1003", name: "Michael Brown", age: 60, gender: "Male", phone: "+91 9988776655", condition: "Asthma", severity: "Low", lastVisit: "2026-03-28", status: "Discharged", }, { id: "PT-1004", name: "Emily Johnson", age: 28, gender: "Female", phone: "+91 9011122233", condition: "Anemia", severity: "Low", lastVisit: "2026-04-15", status: "Active", }, { id: "PT-1005", name: "David Wilson", age: 52, gender: "Male", phone: "+91 9112233445", condition: "Arthritis", severity: "Medium", lastVisit: "2026-04-01", status: "In Treatment", }, { id: "PT-1006", name: "Sophia Martinez", age: 36, gender: "Female", phone: "+91 9001122334", condition: "Migraine", severity: "Low", lastVisit: "2026-03-25", status: "Active", }, { id: "PT-1007", name: "James Anderson", age: 41, gender: "Male", phone: "+91 8899001122", condition: "Obesity", severity: "Medium", lastVisit: "2026-04-18", status: "In Treatment", }, { id: "PT-1008", name: "Olivia Taylor", age: 29, gender: "Female", phone: "+91 9988123412", condition: "Thyroid Disorder", severity: "Medium", lastVisit: "2026-04-12", status: "Active", }, { id: "PT-1009", name: "William Thomas", age: 55, gender: "Male", phone: "+91 9877001122", condition: "Heart Disease", severity: "High", lastVisit: "2026-04-05", status: "In Treatment", }, { id: "PT-1010", name: "Isabella Moore", age: 33, gender: "Female", phone: "+91 9123004455", condition: "PCOS", severity: "Medium", lastVisit: "2026-03-30", status: "Active", }, { id: "PT-1011", name: "Alexander Jackson", age: 47, gender: "Male", phone: "+91 9009876543", condition: "Sleep Apnea", severity: "Low", lastVisit: "2026-04-02", status: "Active", }, { id: "PT-1012", name: "Mia White", age: 24, gender: "Female", phone: "+91 8899123456", condition: "Allergies", severity: "Low", lastVisit: "2026-04-19", status: "Active", }, { id: "PT-1013", name: "Benjamin Harris", age: 62, gender: "Male", phone: "+91 9000112233", condition: "Parkinson’s", severity: "High", lastVisit: "2026-03-20", status: "In Treatment", }, { id: "PT-1014", name: "Charlotte Clark", age: 38, gender: "Female", phone: "+91 9111002233", condition: "Depression", severity: "Medium", lastVisit: "2026-04-08", status: "Active", }, { id: "PT-1015", name: "Henry Lewis", age: 50, gender: "Male", phone: "+91 9223344556", condition: "Chronic Kidney Disease", severity: "High", lastVisit: "2026-04-11", status: "In Treatment", }, ];
+const initialPatients: Patient[] = [
+  {
+    id: "PT-1001",
+    name: "John Doe",
+    age: 45,
+    gender: "Male",
+    phone: "+91 9876543210",
+    condition: "Diabetes",
+    severity: "High",
+    lastVisit: "2026-04-20",
+    status: "In Treatment",
+  },
+];
 
+// ---------------- COMPONENT ----------------
 export default function PatientDetails() {
   const [isListView, setIsListView] = useState(true);
+  const [patients, setPatients] = useState<Patient[]>(initialPatients);
+
+  const [open, setOpen] = useState(false);
+
+  const [form, setForm] = useState({
+    name: "",
+    age: "",
+    gender: "",
+    phone: "",
+    condition: "",
+    severity: "Low",
+    lastVisit: "",
+    status: "Active",
+  });
+
+  const handleChange = (key: string, value: string) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const newPatient: Patient = {
+      id: `PT-${1000 + patients.length + 1}`,
+      name: form.name,
+      age: Number(form.age),
+      gender: form.gender,
+      phone: form.phone,
+      condition: form.condition,
+      severity: form.severity as any,
+      lastVisit: form.lastVisit,
+      status: form.status as any,
+    };
+
+    setPatients((prev) => [newPatient, ...prev]);
+
+    // reset
+    setForm({
+      name: "",
+      age: "",
+      gender: "",
+      phone: "",
+      condition: "",
+      severity: "Low",
+      lastVisit: "",
+      status: "Active",
+    });
+
+    setOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 space-y-6">
@@ -34,34 +120,207 @@ export default function PatientDetails() {
           </p>
         </div>
 
-        {/* SWITCH */}
-        <div className="flex items-center bg-white/80 border rounded-full p-1 shadow-sm w-fit">
+        <div className="flex items-center gap-3">
 
-          <button
-            onClick={() => setIsListView(true)}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm transition ${
-              isListView ? "bg-indigo-600 text-white shadow" : "text-gray-600"
-            }`}
-          >
-            <List className="h-4 w-4" />
-            List
-          </button>
+          {/* ✅ ADD PATIENT BUTTON */}
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <button className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full text-sm shadow hover:bg-indigo-700 transition">
+                <Plus className="h-4 w-4" />
+                Add Patient
+              </button>
+            </DialogTrigger>
 
-          <button
-            onClick={() => setIsListView(false)}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm transition ${
-              !isListView ? "bg-indigo-600 text-white shadow" : "text-gray-600"
-            }`}
-          >
-            <LayoutGrid className="h-4 w-4" />
-            Grid
-          </button>
+            {/* ✅ FIXED WHITE BACKGROUND */}
+            <DialogContent className="sm:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
 
+  {/* HEADER */}
+  <div className="px-6 py-4 border-b bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
+    <DialogTitle className="text-lg text-white font-semibold">
+      Add New Patient
+    </DialogTitle>
+    <p className="text-sm text-white opacity-90">
+      Fill in patient details to create a new record
+    </p>
+  </div>
+
+  {/* FORM */}
+  <form onSubmit={handleSubmit} className="p-6 space-y-6">
+
+    {/* BASIC INFO */}
+    <div className="space-y-4">
+      <h3 className="text-sm font-semibold text-black uppercase tracking-wide">
+        Basic Information
+      </h3>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div className="space-y-1">
+          <Label>Name</Label>
+          <Input
+            placeholder="Enter full name"
+            value={form.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label>Age</Label>
+          <Input
+            type="number"
+            placeholder="Enter age"
+            value={form.age}
+            onChange={(e) => handleChange("age", e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label>Gender</Label>
+          <Select onValueChange={(v) => handleChange("gender", v)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select gender" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="Male">Male</SelectItem>
+              <SelectItem value="Female">Female</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-1">
+          <Label>Phone</Label>
+          <Input
+            placeholder="+91 9876543210"
+            value={form.phone}
+            onChange={(e) => handleChange("phone", e.target.value)}
+            required
+          />
         </div>
 
       </div>
+    </div>
 
-      {/* TABLE VIEW */}
+    {/* MEDICAL INFO */}
+    <div className="space-y-4">
+      <h3 className="text-sm font-semibold text-black uppercase tracking-wide">
+        Medical Details
+      </h3>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div className="space-y-1">
+          <Label>Condition</Label>
+          <Select onValueChange={(v) => handleChange("condition", v)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select condition" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="Diabetes">Diabetes</SelectItem>
+              <SelectItem value="Hypertension">Hypertension</SelectItem>
+              <SelectItem value="Asthma">Asthma</SelectItem>
+              <SelectItem value="Heart Disease">Heart Disease</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-1">
+          <Label>Severity</Label>
+          <Select
+            defaultValue="Low"
+            onValueChange={(v) => handleChange("severity", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="Low">Low</SelectItem>
+              <SelectItem value="Medium">Medium</SelectItem>
+              <SelectItem value="High">High</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-1">
+          <Label>Last Visit</Label>
+          <Input
+            type="date"
+            value={form.lastVisit}
+            onChange={(e) => handleChange("lastVisit", e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label>Status</Label>
+          <Select
+            defaultValue="Active"
+            onValueChange={(v) => handleChange("status", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="Active">Active</SelectItem>
+              <SelectItem value="In Treatment">In Treatment</SelectItem>
+              <SelectItem value="Discharged">Discharged</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+      </div>
+    </div>
+
+    {/* FOOTER */}
+    <DialogFooter className="pt-4 flex flex-col-reverse sm:flex-row gap-2">
+      <DialogClose asChild>
+        <Button variant="outline" className="w-full sm:w-auto">
+          Cancel
+        </Button>
+      </DialogClose>
+
+      <Button
+        type="submit"
+        className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 text-sm shadow hover:bg-indigo-700 transition"
+      >
+        Add Patient
+      </Button>
+    </DialogFooter>
+
+  </form>
+</DialogContent>
+          </Dialog>
+
+          {/* SWITCH (UNCHANGED) */}
+          <div className="flex items-center bg-white/80 border rounded-full p-1 shadow-sm w-fit">
+
+            <button
+              onClick={() => setIsListView(true)}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm transition ${
+                isListView ? "bg-indigo-600 text-white shadow" : "text-gray-600"
+              }`}
+            >
+              <List className="h-4 w-4" />
+              List
+            </button>
+
+            <button
+              onClick={() => setIsListView(false)}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm transition ${
+                !isListView ? "bg-indigo-600 text-white shadow" : "text-gray-600"
+              }`}
+            >
+              <LayoutGrid className="h-4 w-4" />
+              Grid
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+
+      {/* TABLE VIEW (UNCHANGED) */}
       {isListView ? (
         <Card className="shadow-md hover:shadow-xl transition border bg-white/90 backdrop-blur">
           <CardContent>
@@ -70,10 +329,9 @@ export default function PatientDetails() {
         </Card>
       ) : (
 
-        /* ---------------- PREMIUM GRID VIEW ---------------- */
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-  {patients.map((p) => (
+        /* GRID VIEW (UNCHANGED) */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {patients.map((p) => (
     <Card
       key={p.id}
       className="group relative overflow-hidden rounded-2xl border bg-white/70 backdrop-blur-xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
@@ -133,7 +391,7 @@ export default function PatientDetails() {
             {p.severity} Risk
           </span>
         </div>
-      </CardHeader>
+              </CardHeader>
 
       {/* BODY */}
       <CardContent className="space-y-3 text-sm">
@@ -162,7 +420,7 @@ export default function PatientDetails() {
           <p className="font-medium">{p.lastVisit}</p>
         </div>
 
-      </CardContent>
+              </CardContent>
 
       {/* FOOTER ACTIONS */}
       <div className="flex items-center justify-between px-5 pb-4">
@@ -177,10 +435,9 @@ export default function PatientDetails() {
 
       </div>
 
-    </Card>
-  ))}
-
-</div>
+            </Card>
+          ))}
+        </div>
       )}
 
     </div>
