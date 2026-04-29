@@ -36,30 +36,18 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-/* ---------------- TYPES ---------------- */
-type Gender = "Male" | "Female" | "Other";
-type Severity = "Low" | "Medium" | "High";
-type Status = "Active" | "In Treatment" | "Discharged";
-
-/* ---------------- DATA ---------------- */
-const initialPatients: Patient[] = [
-  {
-    id: "PT-1001",
-    name: "John Doe",
-    age: 45,
-    gender: "Male",
-    phone: "+91 9876543210",
-    condition: "Diabetes",
-    severity: "High",
-    lastVisit: "2026-04-20",
-    status: "In Treatment",
-  },
-];
+/* ✅ IMPORT CONSTANTS */
+import {
+  patientsMock,
+  type Gender,
+  type Severity,
+  type Status,
+} from "@/constants/patients";
 
 /* ---------------- COMPONENT ---------------- */
 export default function PatientDetails() {
   const [isListView, setIsListView] = useState(true);
-  const [patients, setPatients] = useState<Patient[]>(initialPatients);
+  const [patients, setPatients] = useState<Patient[]>(patientsMock);
   const [open, setOpen] = useState(false);
 
   const [form, setForm] = useState<{
@@ -85,54 +73,56 @@ export default function PatientDetails() {
   const handleChange = (key: keyof typeof form, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
+
   // 🔔 notification helper
-function showNotification(title: string, body: string) {
-  if (!("Notification" in window)) return;
+  function showNotification(title: string, body: string) {
+    if (!("Notification" in window)) return;
 
-  if (Notification.permission === "granted") {
-    new Notification(title, {
-      body,
-      icon: "/favicon.svg",
-    });
+    if (Notification.permission === "granted") {
+      new Notification(title, {
+        body,
+        icon: "/favicon.svg",
+      });
+    }
   }
-}
+
   const handleSubmit = (e: any) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const newPatient: Patient = {
-    id: `PT-${1000 + patients.length + 1}`,
-    name: form.name,
-    age: Number(form.age),
-    gender: form.gender,
-    phone: form.phone,
-    condition: form.condition,
-    severity: form.severity,
-    lastVisit: form.lastVisit,
-    status: form.status,
+    const newPatient: Patient = {
+      id: `PT-${1000 + patients.length + 1}`,
+      name: form.name,
+      age: Number(form.age),
+      gender: form.gender,
+      phone: form.phone,
+      condition: form.condition,
+      severity: form.severity,
+      lastVisit: form.lastVisit,
+      status: form.status,
+    };
+
+    setPatients((prev) => [newPatient, ...prev]);
+
+    // ✅ SUCCESS NOTIFICATION
+    showNotification(
+      "Patient Added ✅",
+      `${form.name} has been added successfully`
+    );
+
+    // reset
+    setForm({
+      name: "",
+      age: "",
+      gender: "Male",
+      phone: "",
+      condition: "",
+      severity: "Low",
+      lastVisit: "",
+      status: "Active",
+    });
+
+    setOpen(false);
   };
-
-  setPatients((prev) => [newPatient, ...prev]);
-
-  // ✅ SUCCESS NOTIFICATION
-  showNotification(
-    "Patient Added ✅",
-    `${form.name} has been added successfully`
-  );
-
-  // reset form
-  setForm({
-    name: "",
-    age: "",
-    gender: "Male",
-    phone: "",
-    condition: "",
-    severity: "Low",
-    lastVisit: "",
-    status: "Active",
-  });
-
-  setOpen(false);
-};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 space-y-6">
@@ -166,12 +156,12 @@ function showNotification(title: string, body: string) {
                 <DialogTitle className="text-lg text-white font-semibold">
                   Add New Patient
                 </DialogTitle>
-    <p className="text-sm text-white opacity-90">
-      Fill in patient details to create a new record
-    </p>
+                <p className="text-sm text-white opacity-90">
+                  Fill in patient details to create a new record
+                </p>
               </div>
 
-  {/* FORM */}
+              {/* FORM */}
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
 
     {/* BASIC INFO */}
@@ -184,47 +174,47 @@ function showNotification(title: string, body: string) {
 
         <div className="space-y-1">
                     <Label>Name</Label>
-                    <Input
+                  <Input
             placeholder="Enter full name"
-                      value={form.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
-                      required
-                    />
+                    value={form.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    required
+                  />
                   </div>
 
         <div className="space-y-1">
                     <Label>Age</Label>
-                    <Input
-                      type="number"
+                  <Input
+                    type="number"
             placeholder="Enter age"
-                      value={form.age}
-                      onChange={(e) => handleChange("age", e.target.value)}
-                      required
-                    />
+                    value={form.age}
+                    onChange={(e) => handleChange("age", e.target.value)}
+                    required
+                  />
                   </div>
 
         <div className="space-y-1">
                     <Label>Gender</Label>
           <Select onValueChange={(v) => handleChange("gender", v)}>
-                      <SelectTrigger>
+                    <SelectTrigger>
               <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
+                    </SelectTrigger>
                       <SelectContent className="bg-white">
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <SelectItem value="Male">Male</SelectItem>
+                      <SelectItem value="Female">Female</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
                   </div>
 
         <div className="space-y-1">
                     <Label>Phone</Label>
-                    <Input
-                      value={form.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
-                      required
-                    />
-                  </div>
+                  <Input
+                    value={form.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    required
+                  />
+                </div>
 
       </div>
     </div>

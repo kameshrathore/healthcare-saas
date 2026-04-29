@@ -20,10 +20,10 @@ import {
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 
 import { Card, CardContent } from "@/components/ui/card";
+
 import {
   Users,
   Activity,
@@ -34,36 +34,18 @@ import {
   PieChart as PieIcon,
 } from "lucide-react";
 
-// 📊 UPDATED DATA (4 METRICS)
-const chartData = [
-  { month: "January", opd: 320, ipd: 120, emergency: 90, lab: 210 },
-  { month: "February", opd: 410, ipd: 180, emergency: 110, lab: 260 },
-  { month: "March", opd: 380, ipd: 150, emergency: 100, lab: 240 },
-  { month: "April", opd: 290, ipd: 200, emergency: 130, lab: 220 },
-  { month: "May", opd: 450, ipd: 210, emergency: 140, lab: 300 },
-  { month: "June", opd: 500, ipd: 230, emergency: 160, lab: 330 },
-];
-
-// 🥧 PIE DATA (UPDATED)
-const pieData = [
-  { name: "OPD", value: 2350 },
-  { name: "IPD", value: 1090 },
-  { name: "Emergency", value: 680 },
-  { name: "Lab Tests", value: 1570 },
-];
-
-const COLORS = ["#22c55e", "#f97316", "#ef4444", "#3b82f6"];
-
-const chartConfig = {
-  opd: { label: "OPD Patients", color: "#22c55e" },
-  ipd: { label: "IPD Patients", color: "#f97316" },
-  emergency: { label: "Emergency Cases", color: "#ef4444" },
-  lab: { label: "Lab Tests", color: "#3b82f6" },
-} satisfies ChartConfig;
+// ✅ IMPORT CONSTANTS
+import {
+  chartData,
+  pieData,
+  COLORS,
+  chartConfig,
+} from "@/constants/analytics";
 
 export default function Analytics() {
   const [view, setView] = useState<"bar" | "line" | "pie">("bar");
 
+  // 📊 KPI CALCULATIONS
   const totalOPD = chartData.reduce((a, b) => a + b.opd, 0);
   const totalIPD = chartData.reduce((a, b) => a + b.ipd, 0);
   const totalEmergency = chartData.reduce((a, b) => a + b.emergency, 0);
@@ -72,7 +54,7 @@ export default function Analytics() {
   return (
     <div className="p-6 space-y-6">
 
-      {/* 🔹 HEADER */}
+      {/* HEADER */}
       <div>
         <h2 className="text-3xl font-bold tracking-tight">
           Patient Analytics
@@ -82,7 +64,7 @@ export default function Analytics() {
         </p>
       </div>
 
-      {/* 🔹 KPI CARDS */}
+      {/* KPI CARDS */}
       <div className="grid md:grid-cols-4 gap-4">
 
         <Card className="hover:shadow-xl transition bg-green-50">
@@ -127,7 +109,7 @@ export default function Analytics() {
 
       </div>
 
-      {/* 🔥 CENTERED TOGGLE */}
+      {/* VIEW TOGGLE */}
       <div className="flex justify-center">
         <div className="flex gap-2 bg-white/70 border rounded-xl p-2 shadow-sm">
 
@@ -164,7 +146,7 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* 🔹 CHART */}
+      {/* CHART */}
       <Card className="hover:shadow-xl transition">
         <CardContent className="p-4">
 
