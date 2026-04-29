@@ -27,7 +27,7 @@ import {
 import { auth } from "@/services/firebase";
 import { useRouter } from "@tanstack/react-router";
 
-// ✅ notification helper
+// 🔔 notification helper
 function showNotification(title: string, body: string) {
   if (!("Notification" in window)) return;
 
@@ -52,8 +52,8 @@ export function LoginForm({
   const [error, setError] = useState<string | null>(null);
 
   // 🔐 Email Login
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setError(null);
 
     try {
@@ -61,7 +61,6 @@ export function LoginForm({
 
       await signInWithEmailAndPassword(auth, email, password);
 
-      // ✅ SUCCESS NOTIFICATION
       showNotification(
         "Login Successful 🎉",
         "Welcome back to Healthcare Dashboard"
@@ -71,7 +70,6 @@ export function LoginForm({
     } catch (err: any) {
       setError("Invalid email or password");
 
-      // ❌ ERROR NOTIFICATION
       showNotification(
         "Login Failed",
         "Please check your credentials"
@@ -89,7 +87,6 @@ export function LoginForm({
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
 
-      // ✅ SUCCESS NOTIFICATION
       showNotification(
         "Google Login Successful 🎉",
         "Welcome back!"
@@ -106,6 +103,22 @@ export function LoginForm({
     }
   };
 
+  // 🧪 Demo Autofill
+  const fillDemo = () => {
+    setEmail("test@healthcare.com");
+    setPassword("123456");
+  };
+
+  // ⚡ One-click demo login
+  const loginDemo = async () => {
+    setEmail("test@healthcare.com");
+    setPassword("123456");
+
+    setTimeout(() => {
+      handleLogin();
+    }, 100);
+  };
+
   return (
     <div
       className={cn("flex flex-col gap-6 w-full max-w-md mx-auto", className)}
@@ -114,7 +127,7 @@ export function LoginForm({
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 blur-3xl" />
 
-      <Card className="shadow-xl border border-border/50 backdrop-blur-xl bg-white/90">
+      <Card className="shadow-xl border border-border/50 backdrop-blur-xl bg-white/90 dark:bg-gray-900/80">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Welcome back
@@ -127,12 +140,58 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-5">
 
+            {/* 🧪 DEMO LOGIN BOX */}
+            <div className="bg-muted border rounded-lg p-3 text-sm space-y-2">
+              <p className="font-medium text-foreground flex items-center justify-between">
+                Demo Login
+                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
+                  Test Account
+                </span>
+              </p>
+
+              <div className="text-muted-foreground text-xs space-y-1">
+                <p>
+                  Email:{" "}
+                  <span className="font-medium text-foreground">
+                    test@healthcare.com
+                  </span>
+                </p>
+                <p>
+                  Password:{" "}
+                  <span className="font-medium text-foreground">
+                    123456
+                  </span>
+                </p>
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={fillDemo}
+                >
+                  Autofill
+                </Button>
+
+                <Button
+                  type="button"
+                  size="sm"
+                  className="w-full"
+                  onClick={loginDemo}
+                >
+                  1-click Login
+                </Button>
+              </div>
+            </div>
+
             {/* Google Login */}
             <Field>
               <Button
                 type="button"
                 variant="outline"
-                className="w-full flex items-center justify-center gap-2 h-11 rounded-lg shadow-xs font-medium"
+                className="w-full flex items-center justify-center gap-2 h-11 rounded-lg"
                 onClick={handleGoogle}
               >
                 <img
@@ -183,7 +242,7 @@ export function LoginForm({
 
             {/* Error */}
             {error && (
-              <p className="text-sm text-red-500 bg-red-50 p-2 rounded-md">
+              <p className="text-sm text-red-500 bg-red-50 dark:bg-red-900/30 p-2 rounded-md">
                 {error}
               </p>
             )}
@@ -208,7 +267,6 @@ export function LoginForm({
         </CardContent>
       </Card>
 
-      {/* Bottom text */}
       <p className="text-center text-xs text-muted-foreground">
         By continuing, you agree to our Terms & Privacy Policy
       </p>
