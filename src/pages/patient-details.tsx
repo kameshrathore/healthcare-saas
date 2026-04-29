@@ -85,37 +85,54 @@ export default function PatientDetails() {
   const handleChange = (key: keyof typeof form, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
+  // 🔔 notification helper
+function showNotification(title: string, body: string) {
+  if (!("Notification" in window)) return;
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    const newPatient: Patient = {
-      id: `PT-${1000 + patients.length + 1}`,
-      name: form.name,
-      age: Number(form.age),
-      gender: form.gender,
-      phone: form.phone,
-      condition: form.condition,
-      severity: form.severity,
-      lastVisit: form.lastVisit,
-      status: form.status,
-    };
-
-    setPatients((prev) => [newPatient, ...prev]);
-
-    setForm({
-      name: "",
-      age: "",
-      gender: "Male",
-      phone: "",
-      condition: "",
-      severity: "Low",
-      lastVisit: "",
-      status: "Active",
+  if (Notification.permission === "granted") {
+    new Notification(title, {
+      body,
+      icon: "/favicon.svg",
     });
+  }
+}
+  const handleSubmit = (e: any) => {
+  e.preventDefault();
 
-    setOpen(false);
+  const newPatient: Patient = {
+    id: `PT-${1000 + patients.length + 1}`,
+    name: form.name,
+    age: Number(form.age),
+    gender: form.gender,
+    phone: form.phone,
+    condition: form.condition,
+    severity: form.severity,
+    lastVisit: form.lastVisit,
+    status: form.status,
   };
+
+  setPatients((prev) => [newPatient, ...prev]);
+
+  // ✅ SUCCESS NOTIFICATION
+  showNotification(
+    "Patient Added ✅",
+    `${form.name} has been added successfully`
+  );
+
+  // reset form
+  setForm({
+    name: "",
+    age: "",
+    gender: "Male",
+    phone: "",
+    condition: "",
+    severity: "Low",
+    lastVisit: "",
+    status: "Active",
+  });
+
+  setOpen(false);
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6 space-y-6">
