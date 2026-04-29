@@ -423,31 +423,31 @@ function showNotification(title: string, body: string) {
       {/* BODY */}
       <CardContent className="space-y-3 text-sm">
 
-        <div className="grid grid-cols-2 gap-3 text-xs">
+  <div className="grid grid-cols-2 gap-3 text-xs">
 
-          <div className="bg-gray-50 rounded-lg p-2">
-            <p className="text-gray-400">Age</p>
-            <p className="font-semibold">{p.age}</p>
-          </div>
+    <div className="bg-muted rounded-lg p-2">
+      <p className="text-muted-foreground">Age</p>
+      <p className="font-semibold text-foreground">{p.age}</p>
+    </div>
 
-          <div className="bg-gray-50 rounded-lg p-2">
-            <p className="text-gray-400">Gender</p>
-            <p className="font-semibold">{p.gender}</p>
-          </div>
+    <div className="bg-muted rounded-lg p-2">
+      <p className="text-muted-foreground">Gender</p>
+      <p className="font-semibold text-foreground">{p.gender}</p>
+    </div>
 
-        </div>
+  </div>
 
-        <div className="bg-gray-50 rounded-lg p-2 text-xs">
-          <p className="text-gray-400">Phone</p>
-          <p className="font-medium">{p.phone}</p>
-        </div>
+  <div className="bg-muted rounded-lg p-2 text-xs">
+    <p className="text-muted-foreground">Phone</p>
+    <p className="font-medium text-foreground">{p.phone}</p>
+  </div>
 
-        <div className="bg-gray-50 rounded-lg p-2 text-xs">
-          <p className="text-gray-400">Last Visit</p>
-          <p className="font-medium">{p.lastVisit}</p>
-        </div>
+  <div className="bg-muted rounded-lg p-2 text-xs">
+    <p className="text-muted-foreground">Last Visit</p>
+    <p className="font-medium text-foreground">{p.lastVisit}</p>
+  </div>
 
-              </CardContent>
+</CardContent>
 
       {/* FOOTER ACTIONS */}
       <div className="flex items-center justify-between px-5 pb-4">
