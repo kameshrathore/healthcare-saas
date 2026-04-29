@@ -36,7 +36,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-// ---------------- DATA ----------------
+/* ---------------- TYPES ---------------- */
+type Gender = "Male" | "Female" | "Other";
+type Severity = "Low" | "Medium" | "High";
+type Status = "Active" | "In Treatment" | "Discharged";
+
+/* ---------------- DATA ---------------- */
 const initialPatients: Patient[] = [
   {
     id: "PT-1001",
@@ -51,17 +56,25 @@ const initialPatients: Patient[] = [
   },
 ];
 
-// ---------------- COMPONENT ----------------
+/* ---------------- COMPONENT ---------------- */
 export default function PatientDetails() {
   const [isListView, setIsListView] = useState(true);
   const [patients, setPatients] = useState<Patient[]>(initialPatients);
-
   const [open, setOpen] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    name: string;
+    age: string;
+    gender: Gender;
+    phone: string;
+    condition: string;
+    severity: Severity;
+    lastVisit: string;
+    status: Status;
+  }>({
     name: "",
     age: "",
-    gender: "",
+    gender: "Male",
     phone: "",
     condition: "",
     severity: "Low",
@@ -69,7 +82,7 @@ export default function PatientDetails() {
     status: "Active",
   });
 
-  const handleChange = (key: string, value: string) => {
+  const handleChange = (key: keyof typeof form, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -83,18 +96,17 @@ export default function PatientDetails() {
       gender: form.gender,
       phone: form.phone,
       condition: form.condition,
-      severity: form.severity as any,
+      severity: form.severity,
       lastVisit: form.lastVisit,
-      status: form.status as any,
+      status: form.status,
     };
 
     setPatients((prev) => [newPatient, ...prev]);
 
-    // reset
     setForm({
       name: "",
       age: "",
-      gender: "",
+      gender: "Male",
       phone: "",
       condition: "",
       severity: "Low",
@@ -122,7 +134,7 @@ export default function PatientDetails() {
 
         <div className="flex items-center gap-3">
 
-          {/* ✅ ADD PATIENT BUTTON */}
+          {/* ADD PATIENT */}
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <button className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full text-sm shadow hover:bg-indigo-700 transition">
@@ -131,21 +143,19 @@ export default function PatientDetails() {
               </button>
             </DialogTrigger>
 
-            {/* ✅ FIXED WHITE BACKGROUND */}
             <DialogContent className="sm:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
 
-  {/* HEADER */}
-  <div className="px-6 py-4 border-b bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
-    <DialogTitle className="text-lg text-white font-semibold">
-      Add New Patient
-    </DialogTitle>
+              <div className="px-6 py-4 border-b bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
+                <DialogTitle className="text-lg text-white font-semibold">
+                  Add New Patient
+                </DialogTitle>
     <p className="text-sm text-white opacity-90">
       Fill in patient details to create a new record
     </p>
-  </div>
+              </div>
 
   {/* FORM */}
-  <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <form onSubmit={handleSubmit} className="p-6 space-y-6">
 
     {/* BASIC INFO */}
     <div className="space-y-4">
@@ -153,51 +163,51 @@ export default function PatientDetails() {
         Basic Information
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <div className="space-y-1">
-          <Label>Name</Label>
-          <Input
+                    <Label>Name</Label>
+                    <Input
             placeholder="Enter full name"
-            value={form.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            required
-          />
-        </div>
+                      value={form.name}
+                      onChange={(e) => handleChange("name", e.target.value)}
+                      required
+                    />
+                  </div>
 
         <div className="space-y-1">
-          <Label>Age</Label>
-          <Input
-            type="number"
+                    <Label>Age</Label>
+                    <Input
+                      type="number"
             placeholder="Enter age"
-            value={form.age}
-            onChange={(e) => handleChange("age", e.target.value)}
-            required
-          />
-        </div>
+                      value={form.age}
+                      onChange={(e) => handleChange("age", e.target.value)}
+                      required
+                    />
+                  </div>
 
         <div className="space-y-1">
-          <Label>Gender</Label>
+                    <Label>Gender</Label>
           <Select onValueChange={(v) => handleChange("gender", v)}>
-            <SelectTrigger>
+                      <SelectTrigger>
               <SelectValue placeholder="Select gender" />
-            </SelectTrigger>
-            <SelectContent className="bg-white">
-              <SelectItem value="Male">Male</SelectItem>
-              <SelectItem value="Female">Female</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+                      </SelectTrigger>
+                      <SelectContent className="bg-white">
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
         <div className="space-y-1">
-          <Label>Phone</Label>
-          <Input
-            placeholder="+91 9876543210"
-            value={form.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
-            required
-          />
-        </div>
+                    <Label>Phone</Label>
+                    <Input
+                      value={form.phone}
+                      onChange={(e) => handleChange("phone", e.target.value)}
+                      required
+                    />
+                  </div>
 
       </div>
     </div>
@@ -211,74 +221,74 @@ export default function PatientDetails() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <div className="space-y-1">
-          <Label>Condition</Label>
-          <Select onValueChange={(v) => handleChange("condition", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select condition" />
-            </SelectTrigger>
-            <SelectContent className="bg-white">
-              <SelectItem value="Diabetes">Diabetes</SelectItem>
-              <SelectItem value="Hypertension">Hypertension</SelectItem>
+                    <Label>Condition</Label>
+                    <Select onValueChange={(v) => handleChange("condition", v)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select condition" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white">
+                        <SelectItem value="Diabetes">Diabetes</SelectItem>
+                        <SelectItem value="Hypertension">Hypertension</SelectItem>
               <SelectItem value="Asthma">Asthma</SelectItem>
               <SelectItem value="Heart Disease">Heart Disease</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
         <div className="space-y-1">
-          <Label>Severity</Label>
-          <Select
-            defaultValue="Low"
-            onValueChange={(v) => handleChange("severity", v)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-white">
-              <SelectItem value="Low">Low</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-              <SelectItem value="High">High</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+                    <Label>Severity</Label>
+                    <Select
+                      value={form.severity}
+                      onValueChange={(v: Severity) => handleChange("severity", v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white">
+                        <SelectItem value="Low">Low</SelectItem>
+                        <SelectItem value="Medium">Medium</SelectItem>
+                        <SelectItem value="High">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
         <div className="space-y-1">
-          <Label>Last Visit</Label>
-          <Input
-            type="date"
-            value={form.lastVisit}
-            onChange={(e) => handleChange("lastVisit", e.target.value)}
-            required
-          />
-        </div>
+                    <Label>Last Visit</Label>
+                    <Input
+                      type="date"
+                      value={form.lastVisit}
+                      onChange={(e) => handleChange("lastVisit", e.target.value)}
+                      required
+                    />
+                  </div>
 
         <div className="space-y-1">
-          <Label>Status</Label>
-          <Select
-            defaultValue="Active"
-            onValueChange={(v) => handleChange("status", v)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-white">
-              <SelectItem value="Active">Active</SelectItem>
-              <SelectItem value="In Treatment">In Treatment</SelectItem>
-              <SelectItem value="Discharged">Discharged</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+                    <Label>Status</Label>
+                    <Select
+                      value={form.status}
+                      onValueChange={(v: Status) => handleChange("status", v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white">
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="In Treatment">In Treatment</SelectItem>
+                        <SelectItem value="Discharged">Discharged</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
       </div>
-    </div>
+                </div>
 
     {/* FOOTER */}
     <DialogFooter className="pt-4 flex flex-col-reverse sm:flex-row gap-2">
-      <DialogClose asChild>
+                  <DialogClose asChild>
         <Button variant="outline" className="w-full sm:w-auto">
           Cancel
         </Button>
-      </DialogClose>
+                  </DialogClose>
 
       <Button
         type="submit"
@@ -286,10 +296,10 @@ export default function PatientDetails() {
       >
         Add Patient
       </Button>
-    </DialogFooter>
+                </DialogFooter>
 
-  </form>
-</DialogContent>
+              </form>
+            </DialogContent>
           </Dialog>
 
           {/* SWITCH (UNCHANGED) */}
@@ -323,10 +333,10 @@ export default function PatientDetails() {
       {/* TABLE VIEW (UNCHANGED) */}
       {isListView ? (
         <Card className="shadow-md hover:shadow-xl transition border bg-white/90 backdrop-blur">
-          <CardContent>
-            <DataTable columns={columns} data={patients} />
-          </CardContent>
-        </Card>
+        <CardContent>
+          <DataTable columns={columns} data={patients} />
+        </CardContent>
+      </Card>
       ) : (
 
         /* GRID VIEW (UNCHANGED) */
